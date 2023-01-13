@@ -3,6 +3,7 @@
 #include "window.h"
 #include "fileDialog.h"
 #include "datiDialog.h"
+#include "entryOnlyNumbers.h"
 #include "TCanvas.h"
 #include "TH1.h"
 #include <cstring>
@@ -41,13 +42,19 @@ MyWindow::MyWindow(fs::path cachePath)
  boxInsManuale(Gtk::ORIENTATION_HORIZONTAL),
  boxFile(Gtk::ORIENTATION_VERTICAL),
  boxFileScelta(Gtk::ORIENTATION_HORIZONTAL),
+ boxRange(Gtk::ORIENTATION_VERTICAL),
+ boxSetRange(Gtk::ORIENTATION_HORIZONTAL),
  boxFunzione(Gtk::ORIENTATION_VERTICAL),
  boxFirst2(Gtk::ORIENTATION_VERTICAL),
 
  labelScelta("Scegliere il tipo di input:"),
  labelNumero("Numero di dati:"),
  labelFile("File: "),
+ labelRange("Selezionare il range in cui fittare"),
+ labelDaRange("Da: "),
+ labelARange("A: "),
  labelFunzione("Scrivere la fuzione da fittare"),
+ labelIntiParam("Valori inizializzazione parametri"),
 
  labelParametriInfo("Parametri stimati"),
  labelGrafico("Grafico"),
@@ -63,10 +70,13 @@ MyWindow::MyWindow(fs::path cachePath)
  radioManuale("Inserimento manuale"),
  radioFile("Dati da File"),
 
- checkCompr("Compressione tra -1 e 1"),
+ checkLogaritmico("Scala logaritmica"),
 
  entryNumero(),
  entryFunzione(),
+
+ entryDaRange(true),
+ entryARange(true),
 
  icona(),
 
@@ -75,10 +85,16 @@ MyWindow::MyWindow(fs::path cachePath)
  parametriScroll(),
  treeViewParametri()
 {
+  // Setting start-up variables
   manuali = -1;
   pathFileCSV = fs::path("");
   pathCacheFolder = cachePath;
+  pathBlankPdf = pathCacheFolder;
+  pathBlankPdf.append("BlankGraph.pdf");
 
+  generateBlankPdf();
+
+  // WINDOW STRUCTURE
   set_title("Fitter");
 
   // set_default_size(400, 400);
@@ -141,16 +157,35 @@ MyWindow::MyWindow(fs::path cachePath)
   boxFileScelta.pack_start(bottoneFile, Gtk::PACK_SHRINK, 0);
   boxFileScelta.pack_start(labelFile, Gtk::PACK_SHRINK, 0);
 
+  boxRange.set_homogeneous(false);
+  boxRange.set_margin_bottom(20);
+  boxFirst1.pack_start(boxRange, Gtk::PACK_SHRINK, 0);
+  labelRange.set_xalign(0);
+  labelRange.set_margin_bottom(4);
+  boxRange.pack_start(labelRange, Gtk::PACK_SHRINK);
+  boxSetRange.set_homogeneous(false);
+  boxRange.pack_start(boxSetRange, Gtk::PACK_SHRINK, 0);
+  labelDaRange.set_xalign(0);
+  labelDaRange.set_margin_end(1);
+  entryDaRange.set_margin_end(10);
+  labelARange.set_xalign(0);
+  labelARange.set_margin_end(1);
+  boxSetRange.pack_start(labelDaRange, Gtk::PACK_SHRINK, 0);
+  boxSetRange.pack_start(entryDaRange, Gtk::PACK_SHRINK, 0);
+  boxSetRange.pack_start(labelARange, Gtk::PACK_SHRINK, 0);
+  boxSetRange.pack_start(entryARange, Gtk::PACK_SHRINK, 0);
+
   boxFunzione.set_homogeneous(false);
   boxFunzione.set_margin_bottom(40);
   boxFirst1.pack_start(boxFunzione, Gtk::PACK_SHRINK, 0);
 
   labelFunzione.set_xalign(0);
+  labelFunzione.set_margin_bottom(4);
   boxFunzione.pack_start(labelFunzione, Gtk::PACK_SHRINK, 0);
   boxFunzione.pack_start(entryFunzione, Gtk::PACK_SHRINK, 0);
 
-  checkCompr.set_margin_bottom(10);
-  boxFirst1.pack_start(checkCompr, Gtk::PACK_SHRINK, 0);
+  checkLogaritmico.set_margin_bottom(10);
+  boxFirst1.pack_start(checkLogaritmico, Gtk::PACK_SHRINK, 0);
 
   bottoneFit.signal_clicked().connect(sigc::mem_fun(*this, &MyWindow::on_bottoneFit_clicked));
   bottoneFit.set_hexpand(false);
@@ -308,4 +343,12 @@ void MyWindow::lunghezzaErrorDialog()
   Gtk::MessageDialog dialog(*this, "Numeri di dati diverse", false, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK);
   dialog.set_secondary_text("È stato rilevato un numero diverso di dati lungo la x e lungo la y.\nControllare i dati e ritentare.");
   dialog.run();
+}
+
+void MyWindow::generateBlankPdf()
+{
+  TCanvas *canvasBlank = new TCanvas("BlankGraph", "BlankGraph", 800, 10, 600, 400);
+  canvasBlank->SetFillColor(0);
+  canvasBlank->SetGrid();
+  canvasBlank->SaveAs(pathBlankPdf.c_str());
 }

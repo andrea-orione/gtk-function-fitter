@@ -4,6 +4,7 @@
 #include <gtkmm.h>
 #include "TCanvas.h"
 #include <filesystem>
+#include "entryOnlyNumbers.h"
 
 class MyWindow : public Gtk::Window
 {
@@ -13,10 +14,9 @@ public:
 protected:
   std::filesystem::path pathFileCSV;
   std::filesystem::path pathCacheFolder;
+  std::filesystem::path pathBlankPdf;
   int manuali;
   double *xManuali, *yManuali, *sxManuali, *syManuali, *x, *sx, *y, *sy;
-
-  TCanvas *tela;
 
   void on_radioScelta_toggled(Glib::ustring);
   void on_entryNumero_changed();
@@ -27,15 +27,19 @@ protected:
   void importazioneErrorDialog();
   void lunghezzaErrorDialog();
   void pochiDatiErrorDialog();
+  void generateBlankPdf();
 
-  Gtk::Box mainBox, boxFirst1, boxScelta, boxManuale, boxNumero, boxInsManuale, boxFile, boxFileScelta, boxFunzione;
+  Gtk::Box mainBox, boxFirst1, boxScelta, boxManuale, boxNumero, boxInsManuale, boxFile, boxFileScelta;
+  Gtk::Box boxRange, boxSetRange, boxFunzione;
   Gtk::Box boxFirst2;
-  Gtk::Label labelScelta, labelNumero, LabelFile, labelFile, labelFunzione, labelFunzioneRes, labelParametriInfo, labelGrafico, labelChiSq, labelPValue, labelDoF;
+  Gtk::Label labelScelta, labelNumero, LabelFile, labelFile, labelFunzione, labelFunzioneRes, labelRange, labelDaRange, labelARange, labelIntiParam;
+  Gtk::Label labelParametriInfo, labelGrafico, labelChiSq, labelPValue, labelDoF;
   Gtk::Button bottoneManuale, bottoneFile, bottoneFit, bottoneSalva;
   Gtk::RadioButton radioManuale, radioFile;
   Gtk::SpinButton entryNumero;
-  Gtk::CheckButton checkCompr;
+  Gtk::CheckButton checkLogaritmico;
   Gtk::Entry entryFunzione;
+  Gtk::SpinButton entryDaRange, entryARange;
   Gtk::ScrolledWindow parametriScroll;
   Gtk::Image icona;
   Gtk::EventBox ebox;
