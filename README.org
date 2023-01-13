@@ -1,2 +1,25 @@
 # gtk-function-fitter
-A simple graphical fitter using the ROOT framework
+* What is this
+This is a simple program that i made to quickly analyze data when I'm in lab and I don't have time to code the specific analysis for the single experiment.
+Since I'm not a software developer it may crash or have some bugs that I did not test, so be aware of this when you use it.
+However I hope it is useful and it's not a pain to use it
+
+* Requirements
+To run this program it is required to have installed:
+ - The ROOT framework from Cern
+ - Gtk (it has been written for version 3, not sure it works with other versions)
+
+* How to install it
+- Clone the repository
+- cd into the directory:
+#+begin_src bash
+cd <path to current directory>/gtk-function-fitter
+#+end_src
+ - run the makefile
+#+begin_src bash
+make
+#+end_src
+- run the executable
+#+begin_src bash
+./fitter
+#+end_src
