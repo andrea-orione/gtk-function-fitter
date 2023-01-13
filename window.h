@@ -39,11 +39,10 @@ protected:
   Gtk::SpinButton entryNumero;
   Gtk::CheckButton checkLogaritmico;
   Gtk::Entry entryFunzione;
-  Gtk::SpinButton entryDaRange, entryARange;
-  Gtk::ScrolledWindow parametriScroll;
+  EntryOnlyNumbers entryDaRange, entryARange;
+  Gtk::ScrolledWindow parametriScroll, parametriInitScroll;
   Gtk::Image icona;
-  Gtk::EventBox ebox;
-  Gtk::TreeView treeViewParametri;
+  Gtk::TreeView treeViewParametri, treeViewInitPars;
   Glib::RefPtr<Gtk::ListStore> modelloTreeView;
 
   class ModelColumns : public Gtk::TreeModel::ColumnRecord

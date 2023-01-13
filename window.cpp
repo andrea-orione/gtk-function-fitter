@@ -79,10 +79,11 @@ MyWindow::MyWindow(fs::path cachePath)
  entryARange(true),
 
  icona(),
-
- ebox(),
+ //grafico(),
 
  parametriScroll(),
+ parametriInitScroll(),
+ treeViewInitPars(),
  treeViewParametri()
 {
   // Setting start-up variables
@@ -109,125 +110,135 @@ MyWindow::MyWindow(fs::path cachePath)
   //Parte Sinistra
   boxFirst1.set_homogeneous(false);
   boxFirst1.set_size_request(300, -1);
-  mainBox.pack_start(boxFirst1, Gtk::PACK_SHRINK, 0);
+  mainBox.pack_start(boxFirst1, Gtk::PACK_SHRINK, 1);
 
   boxScelta.set_homogeneous(false);
   boxScelta.set_margin_bottom(40);
-  boxFirst1.pack_start(boxScelta, Gtk::PACK_SHRINK, 0);
+  boxFirst1.pack_start(boxScelta, Gtk::PACK_SHRINK, 1);
 
   labelScelta.set_xalign(0);
-  boxScelta.pack_start(labelScelta, Gtk::PACK_SHRINK, 0);
+  boxScelta.pack_start(labelScelta, Gtk::PACK_SHRINK, 1);
 
   boxManuale.set_homogeneous(false);
   boxManuale.set_margin_top(5);
   boxManuale.set_margin_bottom(5);
-  boxScelta.pack_start(boxManuale, Gtk::PACK_SHRINK, 0);
+  boxScelta.pack_start(boxManuale, Gtk::PACK_SHRINK, 1);
 
   radioManuale.signal_clicked().connect(sigc::bind<-1, Glib::ustring>(sigc::mem_fun(*this, &MyWindow::on_radioScelta_toggled), "manuale"));
-  boxManuale.pack_start(radioManuale, Gtk::PACK_SHRINK, 0);
+  boxManuale.pack_start(radioManuale, Gtk::PACK_SHRINK, 1);
   boxNumero.set_homogeneous(false);
   boxNumero.set_margin_start(30);
-  boxManuale.pack_start(boxNumero, Gtk::PACK_SHRINK, 0);
+  boxManuale.pack_start(boxNumero, Gtk::PACK_SHRINK, 1);
   labelNumero.set_margin_end(10);
-  boxNumero.pack_start(labelNumero, Gtk::PACK_SHRINK, 0);
+  boxNumero.pack_start(labelNumero, Gtk::PACK_SHRINK, 1);
   entryNumero.set_range(2,99);
   entryNumero.set_increments(1,2);
   entryNumero.set_value(2);
   entryNumero.signal_value_changed().connect(sigc::mem_fun(*this, &MyWindow::on_entryNumero_changed));
-  boxNumero.pack_start(entryNumero, Gtk::PACK_SHRINK, 0);
-  boxManuale.pack_start(boxInsManuale, Gtk::PACK_SHRINK, 0);
+  boxNumero.pack_start(entryNumero, Gtk::PACK_SHRINK, 1);
+  boxManuale.pack_start(boxInsManuale, Gtk::PACK_SHRINK, 1);
   bottoneManuale.signal_clicked().connect(sigc::mem_fun(*this, &MyWindow::on_bottoneManuale_clicked));
   bottoneManuale.set_margin_start(30);
   bottoneManuale.set_margin_end(10);
-  boxInsManuale.pack_start(bottoneManuale, Gtk::PACK_SHRINK, 0);
+  boxInsManuale.pack_start(bottoneManuale, Gtk::PACK_SHRINK, 1);
   icona.set_from_icon_name("dialog-error-symbolic",Gtk::IconSize(2.));
-  boxInsManuale.pack_start(icona, Gtk::PACK_SHRINK,0);
+  boxInsManuale.pack_start(icona, Gtk::PACK_SHRINK, 1);
 
-  boxScelta.pack_start(boxFile, Gtk::PACK_SHRINK, 0);
+  boxScelta.pack_start(boxFile, Gtk::PACK_SHRINK, 1);
   radioFile.join_group(radioManuale);
   radioFile.signal_clicked().connect(sigc::bind<-1, Glib::ustring>(sigc::mem_fun(*this, &MyWindow::on_radioScelta_toggled), "file"));
   boxFile.set_homogeneous(false);
-  boxFile.pack_start(radioFile, Gtk::PACK_SHRINK, 0);
+  boxFile.pack_start(radioFile, Gtk::PACK_SHRINK, 1);
   boxFileScelta.set_homogeneous(false);
   boxFileScelta.set_margin_start(30);
-  boxFile.pack_start(boxFileScelta, Gtk::PACK_SHRINK, 0);
+  boxFile.pack_start(boxFileScelta, Gtk::PACK_SHRINK, 1);
   bottoneFile.signal_clicked().connect(sigc::mem_fun(*this, &MyWindow::on_bottoneFile_clicked));
   bottoneFile.set_sensitive(false);
   bottoneFile.set_margin_end(10);
-  boxFileScelta.pack_start(bottoneFile, Gtk::PACK_SHRINK, 0);
-  boxFileScelta.pack_start(labelFile, Gtk::PACK_SHRINK, 0);
+  boxFileScelta.pack_start(bottoneFile, Gtk::PACK_SHRINK, 1);
+  boxFileScelta.pack_start(labelFile, Gtk::PACK_SHRINK, 1);
 
   boxRange.set_homogeneous(false);
   boxRange.set_margin_bottom(20);
-  boxFirst1.pack_start(boxRange, Gtk::PACK_SHRINK, 0);
+  boxFirst1.pack_start(boxRange, Gtk::PACK_SHRINK, 1);
   labelRange.set_xalign(0);
   labelRange.set_margin_bottom(4);
   boxRange.pack_start(labelRange, Gtk::PACK_SHRINK);
   boxSetRange.set_homogeneous(false);
-  boxRange.pack_start(boxSetRange, Gtk::PACK_SHRINK, 0);
+  boxRange.pack_start(boxSetRange, Gtk::PACK_SHRINK, 1);
   labelDaRange.set_xalign(0);
   labelDaRange.set_margin_end(1);
   entryDaRange.set_margin_end(10);
   labelARange.set_xalign(0);
   labelARange.set_margin_end(1);
-  boxSetRange.pack_start(labelDaRange, Gtk::PACK_SHRINK, 0);
-  boxSetRange.pack_start(entryDaRange, Gtk::PACK_SHRINK, 0);
-  boxSetRange.pack_start(labelARange, Gtk::PACK_SHRINK, 0);
-  boxSetRange.pack_start(entryARange, Gtk::PACK_SHRINK, 0);
+  boxSetRange.pack_start(labelDaRange, Gtk::PACK_SHRINK, 1);
+  boxSetRange.pack_start(entryDaRange, Gtk::PACK_SHRINK, 1);
+  boxSetRange.pack_start(labelARange, Gtk::PACK_SHRINK, 1);
+  boxSetRange.pack_start(entryARange, Gtk::PACK_SHRINK, 1);
 
   boxFunzione.set_homogeneous(false);
   boxFunzione.set_margin_bottom(40);
-  boxFirst1.pack_start(boxFunzione, Gtk::PACK_SHRINK, 0);
+  boxFirst1.pack_start(boxFunzione, Gtk::PACK_SHRINK, 1);
 
   labelFunzione.set_xalign(0);
   labelFunzione.set_margin_bottom(4);
-  boxFunzione.pack_start(labelFunzione, Gtk::PACK_SHRINK, 0);
-  boxFunzione.pack_start(entryFunzione, Gtk::PACK_SHRINK, 0);
+  boxFunzione.pack_start(labelFunzione, Gtk::PACK_SHRINK, 1);
+  boxFunzione.pack_start(entryFunzione, Gtk::PACK_SHRINK, 1);
+
+  labelIntiParam.set_xalign(0);
+  boxFirst1.pack_start(labelIntiParam, Gtk::PACK_SHRINK, 1);
+  parametriInitScroll.set_size_request(400,150);
+  parametriInitScroll.set_margin_bottom(20);
+  boxFirst1.pack_start(parametriInitScroll, Gtk::PACK_SHRINK, 1);
+  modelloTreeView = Gtk::ListStore::create(modelloColonne);
+  treeViewInitPars.set_model(modelloTreeView);
+  treeViewInitPars.append_column_editable("Parametro", modelloColonne.columnParName);
+  treeViewInitPars.append_column_editable("Valore", modelloColonne.columnParValue);
+  parametriInitScroll.add(treeViewInitPars);
 
   checkLogaritmico.set_margin_bottom(10);
-  boxFirst1.pack_start(checkLogaritmico, Gtk::PACK_SHRINK, 0);
+  boxFirst1.pack_start(checkLogaritmico, Gtk::PACK_SHRINK, 1);
 
   bottoneFit.signal_clicked().connect(sigc::mem_fun(*this, &MyWindow::on_bottoneFit_clicked));
   bottoneFit.set_hexpand(false);
-  boxFirst1.pack_start(bottoneFit, Gtk::PACK_SHRINK, 0);
+  boxFirst1.pack_start(bottoneFit, Gtk::PACK_SHRINK, 1);
 
   // Parte Destra
   boxFirst2.set_homogeneous(false);
-  mainBox.pack_start(boxFirst2, Gtk::PACK_SHRINK, 0);
+  mainBox.pack_start(boxFirst2, Gtk::PACK_SHRINK, 1);
 
   labelFunzioneRes.set_xalign(0);
   labelFunzioneRes.set_margin_bottom(5);
-  boxFirst2.pack_start(labelFunzioneRes, Gtk::PACK_SHRINK, 0);
+  boxFirst2.pack_start(labelFunzioneRes, Gtk::PACK_SHRINK, 1);
 
   labelParametriInfo.set_xalign(0.5);
-  boxFirst2.pack_start(labelParametriInfo, Gtk::PACK_SHRINK, 0);
+  boxFirst2.pack_start(labelParametriInfo, Gtk::PACK_SHRINK, 1);
 
   parametriScroll.set_size_request(400,150);
   parametriScroll.set_margin_bottom(5);
-  boxFirst2.pack_start(parametriScroll, Gtk::PACK_SHRINK, 0);
-  modelloTreeView = Gtk::ListStore::create(modelloColonne);
+  boxFirst2.pack_start(parametriScroll, Gtk::PACK_SHRINK, 1);
+  //modelloTreeView = Gtk::ListStore::create(modelloColonne);
   treeViewParametri.set_model(modelloTreeView);
   treeViewParametri.append_column("Parametro", modelloColonne.columnParName);
   treeViewParametri.append_column("Valore", modelloColonne.columnParValue);
   parametriScroll.add(treeViewParametri);
 
-  boxFirst2.pack_start(labelGrafico, Gtk::PACK_SHRINK, 0);
-
-  boxFirst2.pack_start(ebox, Gtk::PACK_SHRINK,0);
+  boxFirst2.pack_start(labelGrafico, Gtk::PACK_SHRINK, 1);
+  //boxFirst2.pack_start(grafico, Gtk::PACK_SHRINK, 1);
 
   bottoneSalva.set_margin_bottom(5);
-  boxFirst2.pack_start(bottoneSalva, Gtk::PACK_SHRINK,0);
+  boxFirst2.pack_start(bottoneSalva, Gtk::PACK_SHRINK, 1);
 
   labelChiSq.set_xalign(0);
   labelChiSq.set_margin_bottom(5);
-  boxFirst2.pack_start(labelChiSq,Gtk::PACK_SHRINK,0);
+  boxFirst2.pack_start(labelChiSq,Gtk::PACK_SHRINK, 1);
 
   labelPValue.set_xalign(0);
   labelPValue.set_margin_bottom(5);
-  boxFirst2.pack_start(labelPValue,Gtk::PACK_SHRINK,0);
+  boxFirst2.pack_start(labelPValue,Gtk::PACK_SHRINK, 1);
 
   labelDoF.set_xalign(0);
-  boxFirst2.pack_start(labelDoF,Gtk::PACK_SHRINK,0);
+  boxFirst2.pack_start(labelDoF,Gtk::PACK_SHRINK, 1);
 
   show_all_children();
 }
